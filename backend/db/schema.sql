@@ -20,3 +20,11 @@ CREATE TABLE tags (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name TEXT NOT NULL CHECK (length(name) BETWEEN 1 AND 30)
 );
+
+CREATE TABLE courses (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name TEXT NOT NULL CHECK (length(name) BETWEEN 2 AND 50),
+    description TEXT NOT NULL DEFAULT '' CHECK (length(description) <= 300),
+    created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+    updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
