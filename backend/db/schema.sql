@@ -54,3 +54,11 @@ CREATE TABLE video_views (
     PRIMARY KEY (video_id, visitor_id),
     FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE CASCADE
 );
+
+CREATE TABLE video_likes (
+    video_id INTEGER NOT NULL,
+    visitor_id TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+    PRIMARY KEY (video_id, visitor_id),
+    FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE CASCADE
+);
