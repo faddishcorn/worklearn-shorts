@@ -94,3 +94,6 @@ CREATE TABLE quiz_options (
     UNIQUE (quiz_id, sort_order),
     FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE CASCADE
 );
+
+CREATE UNIQUE INDEX idx_quiz_options_one_correct
+    ON quiz_options (quiz_id) WHERE is_correct = 1;
