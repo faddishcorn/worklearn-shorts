@@ -28,3 +28,13 @@ CREATE TABLE courses (
     created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
     updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
+
+CREATE TABLE course_videos (
+    course_id INTEGER NOT NULL,
+    video_id INTEGER NOT NULL,
+    sort_order INTEGER NOT NULL CHECK (typeof(sort_order) = 'integer' AND sort_order >= 1),
+    PRIMARY KEY (course_id, video_id),
+    UNIQUE (course_id, sort_order),
+    FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+    FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE CASCADE
+);
