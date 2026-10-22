@@ -62,3 +62,13 @@ CREATE TABLE video_likes (
     PRIMARY KEY (video_id, visitor_id),
     FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE CASCADE
 );
+
+CREATE TABLE comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    video_id INTEGER NOT NULL,
+    nickname TEXT NOT NULL CHECK (length(nickname) BETWEEN 1 AND 20),
+    password_hash TEXT NOT NULL,
+    content TEXT NOT NULL CHECK (length(content) BETWEEN 1 AND 500),
+    created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+    FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE CASCADE
+);
