@@ -72,3 +72,12 @@ CREATE TABLE comments (
     created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
     FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE CASCADE
 );
+
+CREATE TABLE quizzes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    video_id INTEGER NOT NULL UNIQUE,
+    question TEXT NOT NULL CHECK (length(question) BETWEEN 1 AND 200),
+    created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+    updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+    FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE CASCADE
+);
