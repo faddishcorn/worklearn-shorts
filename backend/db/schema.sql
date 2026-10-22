@@ -81,3 +81,13 @@ CREATE TABLE quizzes (
     updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
     FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE CASCADE
 );
+
+CREATE TABLE quiz_options (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    quiz_id INTEGER NOT NULL,
+    content TEXT NOT NULL CHECK (length(content) BETWEEN 1 AND 100),
+    sort_order INTEGER NOT NULL CHECK (typeof(sort_order) = 'integer' AND sort_order BETWEEN 1 AND 5),
+    is_correct INTEGER NOT NULL DEFAULT 0 CHECK (is_correct IN (0, 1)),
+    UNIQUE (quiz_id, sort_order),
+    FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE CASCADE
+);
