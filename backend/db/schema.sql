@@ -21,6 +21,9 @@ CREATE TABLE tags (
     name TEXT NOT NULL CHECK (length(name) BETWEEN 1 AND 30)
 );
 
+-- The shared DB connection registers normalize_tag_name before schema use.
+CREATE UNIQUE INDEX idx_tags_name_normalized ON tags (normalize_tag_name(name));
+
 CREATE TABLE courses (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name TEXT NOT NULL CHECK (length(name) BETWEEN 2 AND 50),

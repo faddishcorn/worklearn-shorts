@@ -1,6 +1,7 @@
 import { DatabaseSync } from 'node:sqlite'
 import { pathToFileURL } from 'node:url'
 import { resolveDatabasePath } from '../config/paths.js'
+import { normalizeTagName } from '../utils/tag-name.js'
 
 export function openExistingDatabase(databasePath) {
   const databaseUrl = pathToFileURL(resolveDatabasePath(databasePath))
@@ -11,6 +12,8 @@ export function openExistingDatabase(databasePath) {
 
   try {
     database.open()
+    // Register on every connection so the expression index uses the same key.
+    database.function('normalize_tag_name', { deterministic: true }, normalizeTagName)
     // Foreign key enforcement must be enabled before any transaction starts.
     database.exec('PRAGMA foreign_keys = ON')
 
