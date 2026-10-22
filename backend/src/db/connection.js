@@ -18,6 +18,12 @@ export function openExistingDatabase(databasePath) {
       throw new Error('Unable to enable foreign key constraints.')
     }
 
+    database.exec('PRAGMA busy_timeout = 5000')
+
+    if (database.prepare('PRAGMA busy_timeout').get()?.timeout !== 5000) {
+      throw new Error('Unable to configure database lock timeout.')
+    }
+
     return database
   } catch (error) {
     try {
