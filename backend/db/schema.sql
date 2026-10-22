@@ -5,3 +5,13 @@ CREATE TABLE admins (
     password_hash TEXT NOT NULL,
     created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
+
+CREATE TABLE videos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    title TEXT NOT NULL CHECK (length(title) BETWEEN 2 AND 100),
+    description TEXT NOT NULL DEFAULT '' CHECK (length(description) <= 500),
+    video_path TEXT NOT NULL,
+    thumbnail_path TEXT DEFAULT NULL,
+    created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+    updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
