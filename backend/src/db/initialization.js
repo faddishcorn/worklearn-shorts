@@ -1,4 +1,4 @@
-import { lstatSync, mkdirSync } from 'node:fs'
+import { lstatSync, mkdirSync, openSync } from 'node:fs'
 import { dirname } from 'node:path'
 import { resolveDatabasePath } from '../config/paths.js'
 
@@ -25,4 +25,11 @@ export function prepareDatabaseParentDirectory(databasePath) {
   const resolvedPath = assertDatabaseDoesNotExist(databasePath)
   mkdirSync(dirname(resolvedPath), { recursive: true })
   return resolvedPath
+}
+
+export function createDatabaseFile(databasePath) {
+  const resolvedPath = prepareDatabaseParentDirectory(databasePath)
+  // The initialization owner must keep and finally close this handle.
+  const fileDescriptor = openSync(resolvedPath, 'wx', 0o600)
+  return { databasePath: resolvedPath, fileDescriptor }
 }
