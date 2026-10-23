@@ -1,4 +1,5 @@
-import { lstatSync } from 'node:fs'
+import { lstatSync, mkdirSync } from 'node:fs'
+import { dirname } from 'node:path'
 import { resolveDatabasePath } from '../config/paths.js'
 
 export function assertDatabaseDoesNotExist(databasePath) {
@@ -18,4 +19,10 @@ export function assertDatabaseDoesNotExist(databasePath) {
   const error = new Error('Database initialization refused because the target already exists.')
   error.code = 'EEXIST'
   throw error
+}
+
+export function prepareDatabaseParentDirectory(databasePath) {
+  const resolvedPath = assertDatabaseDoesNotExist(databasePath)
+  mkdirSync(dirname(resolvedPath), { recursive: true })
+  return resolvedPath
 }
