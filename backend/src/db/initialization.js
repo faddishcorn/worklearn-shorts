@@ -2,6 +2,7 @@ import { lstatSync, mkdirSync, openSync, readFileSync } from 'node:fs'
 import { dirname } from 'node:path'
 import { resolveDatabasePath } from '../config/paths.js'
 import { withTransaction } from './transaction.js'
+import { verifyDatabaseSchema } from './schema-validation.js'
 
 export function assertDatabaseDoesNotExist(databasePath) {
   const resolvedPath = resolveDatabasePath(databasePath)
@@ -47,5 +48,6 @@ export function applyDatabaseSchema(database) {
     }
 
     connection.exec(schema)
+    verifyDatabaseSchema(connection)
   })
 }
