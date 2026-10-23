@@ -1,6 +1,7 @@
-import { lstatSync, mkdirSync, openSync } from 'node:fs'
+import { lstatSync, mkdirSync, openSync, readFileSync } from 'node:fs'
 import { dirname } from 'node:path'
 import { resolveDatabasePath } from '../config/paths.js'
+import { withTransaction } from './transaction.js'
 
 export function assertDatabaseDoesNotExist(databasePath) {
   const resolvedPath = resolveDatabasePath(databasePath)
@@ -32,4 +33,19 @@ export function createDatabaseFile(databasePath) {
   // The initialization owner must keep and finally close this handle.
   const fileDescriptor = openSync(resolvedPath, 'wx', 0o600)
   return { databasePath: resolvedPath, fileDescriptor }
+}
+
+export function applyDatabaseSchema(database) {
+  const schema = readFileSync(new URL('../../db/schema.sql', import.meta.url), 'utf8')
+
+  withTransaction(database, connection => {
+    // Check and apply under the same write lock to protect existing schemas.
+    if (connection.prepare('SELECT 1 FROM sqlite_schema LIMIT 1').get()) {
+      const error = new Error('Database initialization requires an empty schema.')
+      error.code = 'EEXIST'
+      throw error
+    }
+
+    connection.exec(schema)
+  })
 }
