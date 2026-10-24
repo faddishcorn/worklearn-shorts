@@ -4,13 +4,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node --watch src/server.js",
-    "start": "node src/server.js"
+    "dev": "node --env-file-if-exists=.env --watch src/server.js",
+    "start": "node src/server.js",
+    "db:init": "node --env-file-if-exists=.env scripts/db-init.js",
+    "db:seed": "node --env-file-if-exists=.env scripts/db-seed.js"
   },
   "engines": {
     "node": ">=22.20.0"
   },
   "dependencies": {
-    "express": "^5.3.0"
+    "express": "^5.3.0",
+    "multer": "^2.5.0"
   }
 }

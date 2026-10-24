@@ -1,10 +1,6 @@
-import express from 'express'
+import { app } from './app.js'
+import { config } from './config.js'
 
-const app = express()
-const port = process.env.PORT || 3000
-
-app.use(express.json())
-
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`)
+app.listen(config.port, () => {
+  console.log(`Server running on http://localhost:${config.port}`)
 })

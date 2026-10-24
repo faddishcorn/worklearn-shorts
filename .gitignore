@@ -150,3 +150,8 @@ vite.config.ts.timestamp-*
 
 # macOS Finder metadata
 .DS_Store
+backend/data/*.db
+backend/data/*.db-wal
+backend/data/*.db-shm
+backend/uploads/
+*:Zone.Identifier
